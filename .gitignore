@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# file to ignore because of different anaconda env
+/Machine Learning - ML.iml
+/.idea/misc.xml
+.idea/
+.idea

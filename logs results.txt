@@ -3,7 +3,7 @@
 3*LSTM(200) epoch=20 maxlen=30 batch_size=100
 score test : 0.6808000206947327
 
-3*BiDi-LSTM(200) epoch=20 maxlen=30 atch_size=100
+3*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=100
 score test : 0.6675999760627747
 
 1*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=100
@@ -18,7 +18,21 @@ score test : 0.6868000030517578
 3*LSTM(200) epoch=20 maxlen=30 batch_size=70
 score test : 0.6836000084877014
 
-3*LSTM(200) epoch=20 maxlen=30 batch_size=42
-score test :
 --------------------------------------
 100k tweets
+3*LSTM(200) epoch=20 maxlen=30 batch_size=50
+score test : ~0.72
+--------------------------------------
+1600k tweets
+
+3*LSTM(200) epoch=20 maxlen=30 batch_size=50
+score test : 0.7152000069618225
+
+3*LSTM(200) epoch=20 maxlen=30 batch_size=500
+score test :  0.727400004863739
+
+3*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=500
+score test : 0.7239999771118164
+
+3*BiDi-LSTM(500) epoch=20 maxlen=30 batch_size=500
+score test : 0.719760000705719

@@ -33,7 +33,7 @@ def clean_text(text):
 
 # Import CSV
 # data = pd.read_csv(
-#     "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/training.1600000.processed.noemoticon.csv",
+#     "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/training.1600000.processed.noemoticon.csv",
 #     header=None,
 #     encoding='latin-1',
 #     usecols=[0, 5])
@@ -46,7 +46,7 @@ def clean_text(text):
 
 # Cleaning all the data
 # data['clean_text'] = data['text'].apply(lambda x: clean_text(x))
-# data.to_csv(r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv', index = False)
+# data.to_csv(r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv', index = False)
 
 
 # The goal is to have a smaller dataset for training
@@ -55,7 +55,7 @@ def create_small_dataset(n, dataset):
 
 
 data2 = pd.read_csv(
-    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv",
+    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
     encoding='latin-1')
 data2['clean_text'] = data2.clean_text.astype(str)
 
@@ -64,7 +64,7 @@ small_df = create_small_dataset(100000, data2)
 print(small_df['polarity'].value_counts())
 print("finishing creating a small dataset")
 small_df.to_csv(
-    r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv',
+    r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/mid_cleaned_data.csv',
     index=False)
 print("finishing saving it")
 

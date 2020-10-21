@@ -9,6 +9,8 @@ from sklearn.model_selection import train_test_split
 
 import tensorflow as tf
 
+import matplotlib.pyplot as plt
+
 # ------------------------------------------------------
 # Setup GPU
 # ------------------------------------------------------
@@ -52,7 +54,7 @@ X_pad = pad_sequences(X_seq, maxlen=30, padding='post')  #maxlen must be equal t
 
 X_train, X_test, y_train, y_test = train_test_split(X_pad, data['polarity'].values, test_size=0.25, random_state=1, shuffle= True)
 
-batch_size = 500
+batch_size = 256
 X_train1 = X_train[batch_size:]
 y_train1 = y_train[batch_size:]
 X_valid = X_train[:batch_size]
@@ -71,9 +73,9 @@ embedding_size = 32
 model = Sequential()
 model.add(Embedding(vocabulary_size, embedding_size, input_length=max_words))
 
-model.add(Bidirectional(LSTM(500, return_sequences=True)))
-model.add(Bidirectional(LSTM(500, return_sequences=True)))
-model.add(Bidirectional(LSTM(500)))
+model.add(Bidirectional(LSTM(256, return_sequences=True)))
+model.add(Bidirectional(LSTM(256, return_sequences=True)))
+model.add(Bidirectional(LSTM(256)))
 
 # model.add(LSTM(200, return_sequences=True))
 # model.add(LSTM(200, return_sequences=True))
@@ -82,10 +84,28 @@ model.add(Bidirectional(LSTM(500)))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=20)
+history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=30)
 
 # ------------------------------------------------------
 # Evaluate the model performance
 # ------------------------------------------------------
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Test accuracy : ", scores[1])
+
+
+loss = history.history['loss']
+loss_val = history.history['val_loss']
+accuracy = history.history['accuracy']
+accuracy_val = history.history['val_accuracy']
+epochs = range(1,len(loss)+1)
+
+plt.plot(epochs, loss, 'b', label='Training loss')
+plt.plot(epochs, loss_val, 'b--', label='validation loss')
+plt.plot(epochs, accuracy, 'r', label='Training accuracy')
+plt.plot(epochs, accuracy_val, 'r--', label='validation accuracy')
+
+plt.title('Training and Validation loss')
+plt.xlabel('Epochs')
+plt.legend()
+plt.grid()
+plt.show()

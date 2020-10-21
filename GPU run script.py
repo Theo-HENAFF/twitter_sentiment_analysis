@@ -35,8 +35,8 @@ tf.keras.callbacks.EarlyStopping(
 # Import cleaned_data CSV
 # ------------------------------------------------------
 data = pd.read_csv(
-    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
-    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
+    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
+    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
     # nrows=20000,
     encoding='latin-1')
 data['clean_text'] = data.clean_text.astype(str)

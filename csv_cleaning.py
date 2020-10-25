@@ -10,8 +10,6 @@ nltk.download('wordnet')
 def clean_text(text):
     # remove users tags and url
     text = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
-    # remove one letters words
-    text = " ".join([w for w in text.split() if len(w) > 1])
     # remove punctuation
     text = "".join([char for char in text if char not in string.punctuation])
     text = re.sub('[0-9]+', '', text)
@@ -30,27 +28,33 @@ def clean_text(text):
     text = [word for word in text if word != '']
     # rejoin for easier one-hot extraction
     text = ' '.join(text)
-    return text
+    # remove two or one letters words
+    new_text = []
+    for w in text.split(" "):
+        if len(w) > 2:
+            new_text.append(w)
+    text = " "
+    return text.join(new_text)
 
 
-# # Import CSV
-# data = pd.read_csv(
-#     # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/training.1600000.processed.noemoticon.csv",
-#     "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/training.1600000.processed.noemoticon.csv",
-#     header=None,
-#     encoding='latin-1',
-#     usecols=[0, 5])
-#
-# # available columns are [0,1,2,4,5]=['polarity', 'id', 'date', 'user', 'text']
-# data.columns = ['polarity', 'text']
-# data['polarity'] = pd.to_numeric(data['polarity'], downcast='integer')
-# # 0 ->[1,0] negative ou 0, 4 ->[0,1] positive ou 1
-# data.polarity = data.polarity.replace({0: 0, 4: 1})
-#
-# # Cleaning all the data
-# data['clean_text'] = data['text'].apply(lambda x: clean_text(x))
-# # data.to_csv(r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv', index = False)
-# data.to_csv(r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv', index = False)
+# Import CSV
+data = pd.read_csv(
+    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/training.1600000.processed.noemoticon.csv",
+    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/training.1600000.processed.noemoticon.csv",
+    header=None,
+    encoding='latin-1',
+    usecols=[0, 5])
+
+# available columns are [0,1,2,4,5]=['polarity', 'id', 'date', 'user', 'text']
+data.columns = ['polarity', 'text']
+data['polarity'] = pd.to_numeric(data['polarity'], downcast='integer')
+# 0 ->[1,0] negative ou 0, 4 ->[0,1] positive ou 1
+data.polarity = data.polarity.replace({0: 0, 4: 1})
+
+# Cleaning all the data
+data['clean_text'] = data['text'].apply(lambda x: clean_text(x))
+# data.to_csv(r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv', index = False)
+data.to_csv(r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv', index = False)
 
 
 # The goal is to have a smaller dataset for training

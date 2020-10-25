@@ -39,4 +39,13 @@ score test : 0.719760000705719
 3*BiDi-LSTM(500) epoch=20 maxlen=30 batch_size=500
 score test : 0.7556174993515015
 
+3*BiDi-LSTM(512) epoch=40 maxlen=30 batch_size=512
+score test : 0.7486050128936768
+
+BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512
+score test : 0.7488024830818176
+
+BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512
+score test : 0.7529925107955933
+
 

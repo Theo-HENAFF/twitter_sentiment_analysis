@@ -50,11 +50,11 @@ data['clean_text'] = data.clean_text.astype(str)
 tk = Tokenizer(lower=True)
 tk.fit_on_texts(data['clean_text'].values)
 X_seq = tk.texts_to_sequences(data['clean_text'].values)  # X)
-X_pad = pad_sequences(X_seq, maxlen=30, padding='post')  #maxlen must be equal to maxword
+X_pad = pad_sequences(X_seq, maxlen=25, padding='post')  #maxlen must be equal to maxword
 
 X_train, X_test, y_train, y_test = train_test_split(X_pad, data['polarity'].values, test_size=0.25, random_state=1, shuffle= True)
 
-batch_size = 128
+batch_size = 512
 X_train1 = X_train[batch_size:]
 y_train1 = y_train[batch_size:]
 X_valid = X_train[:batch_size]
@@ -64,7 +64,7 @@ y_valid = y_train[:batch_size]
 # Model parameters
 # ------------------------------------------------------
 vocabulary_size = len(tk.word_counts.keys()) + 1
-max_words = 30 #100 #maxlen must be equal to maxword
+max_words = 25 #100 #maxlen must be equal to maxword
 embedding_size = 32
 
 # ------------------------------------------------------
@@ -75,7 +75,7 @@ model.add(Embedding(vocabulary_size, embedding_size, input_length=max_words))
 
 # model.add(Bidirectional(LSTM(32, return_sequences=True)))
 # model.add(Bidirectional(LSTM(32, return_sequences=True)))
-model.add(Bidirectional(LSTM(256)))
+model.add(Bidirectional(LSTM(32)))
 
 # model.add(LSTM(200, return_sequences=True))
 # model.add(LSTM(200, return_sequences=True))
@@ -84,28 +84,13 @@ model.add(Bidirectional(LSTM(256)))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=5)
+history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=20)
 
 # ------------------------------------------------------
 # Evaluate the model performance
 # ------------------------------------------------------
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Test accuracy : ", scores[1])
-
-# # Get training and test loss histories
-# training_loss = history.history['loss']
-# test_loss = history.history['val_loss']
-#
-# # Create count of the number of epochs
-# epoch_count = range(1, len(training_loss) + 1)
-#
-# # Visualize loss history
-# plt.plot(epoch_count, training_loss, 'r--')
-# plt.plot(epoch_count, test_loss, 'b-')
-# plt.legend(['Training Loss', 'Test Loss'])
-# plt.xlabel('Epoch')
-# plt.ylabel('Loss')
-# plt.show();
 
 
 loss = history.history['loss']

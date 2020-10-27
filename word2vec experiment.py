@@ -5,7 +5,7 @@ from gensim.models import Word2Vec
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
-from keras.layers import Embedding, LSTM, Dense, Bidirectional
+from keras.layers import Embedding, LSTM, Dense
 
 from sklearn.model_selection import train_test_split
 
@@ -34,11 +34,27 @@ tf.keras.callbacks.EarlyStopping(
 )
 
 # ------------------------------------------------------
+# Parameters
+# ------------------------------------------------------
+# keep tokens with a min occurrence
+min_occurance = 5
+# Word2Vec parameters
+size_word2vec = 100
+min_count_word2vec = 20
+# NN s general parameters
+batch_size = 256
+test_size=0.25
+# LSTM s parameters
+lstm_size = 128
+lstm_dropout = 0.6
+lstm_recurrent_dropout = 0.0
+
+# ------------------------------------------------------
 # Import cleaned_data CSV
 # ------------------------------------------------------
 df = pd.read_csv(
-    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
-    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv",
+    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
+    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
     # nrows=20000,
     encoding='latin-1')
 df['clean_text'] = df.clean_text.astype(str)
@@ -54,15 +70,13 @@ for items in df['clean_text'].iteritems():
         else:
             dict_word[word] = 1  # dictionary['UNK']
 
-# keep tokens with a min occurrence
-min_occurance = 5
+
 cleaned_dict_word = [k for k,c in dict_word.items() if c >= min_occurance]
 
-# sentences = df['clean_text'].tolist()
-print('Total training sentences: %d' % len(sentences))
-
-# train word2vec model
-model = Word2Vec(sentences, size=100, min_count=20, workers=10)
+# ------------------------------------------------------
+# Train Word2Vec model
+# ------------------------------------------------------
+model = Word2Vec(sentences, size=size_word2vec, min_count=min_count_word2vec, workers=10)
 # summarize vocabulary size in model
 words = list(model.wv.vocab)
 print('Vocabulary size: %d' % len(words))
@@ -73,6 +87,10 @@ model.wv.save_word2vec_format(filename, binary=False)
 
 print(model.wv.most_similar('good'))
 
+
+# ------------------------------------------------------
+# Define functions to create the word2vec weight matrix
+# ------------------------------------------------------
 def load_embedding(filename):
     # load embedding into memory, skip first line
     file = open(filename,'r')
@@ -87,33 +105,36 @@ def load_embedding(filename):
     return embedding
 
 
-def get_weight_matrix(embedding, vocab):
-    # total vocabulary size plus 0 for unknown words
+def get_weight_matrix(vocab):
     vocab_size = len(vocab) + 1
     # define weight matrix dimensions with all 0
     weight_matrix = np.zeros((vocab_size, 100))
-    # step vocab, store vectors using the Tokenizer's integer mapping
-    for word, i in vocab.items():
-        weight_matrix[i] = embedding.get(word)
+
+    for w, i in vocab.items():
+        # The word_index contains a token for all words of the training data so we need to limit that
+        if i < vocab_size:
+            try:
+                vect = model.wv.get_vector(w)
+                weight_matrix[i] = vect
+            # Check if the word from the training data occurs in the GloVe word embeddings
+            # Otherwise the vector is kept with only zeros
+            except:
+                pass
+        else:
+            break
     return weight_matrix
 
 
-# pad sequences
+# ------------------------------------------------------
+# Convert text to vector
+# ------------------------------------------------------
 max_length = max([len(s.split()) for s in df['clean_text']])
-
 # fit the tokenizer on the documents
 tk = Tokenizer(lower=True)
 tk.fit_on_texts(df['clean_text'].values)
-X_seq = tk.texts_to_sequences(df['clean_text'].values)  # X)
-X_pad = pad_sequences(X_seq, maxlen=max_length, padding='post')  #maxlen must be equal to maxword
 
-X_train, X_test, y_train, y_test = train_test_split(X_pad, df['polarity'].values, test_size=0.25, random_state=1, shuffle= True)
-
-batch_size = 512
-X_train1 = X_train[batch_size:]
-y_train1 = y_train[batch_size:]
-X_valid = X_train[:batch_size]
-y_valid = y_train[:batch_size]
+X_seq = tk.texts_to_sequences(df['clean_text'].values)
+X_pad = pad_sequences(X_seq, maxlen=max_length, padding='post')  # maxlen must be equal to maxword
 
 # define vocabulary size (largest integer value)
 vocab_size = len(tk.word_index) + 1
@@ -121,20 +142,34 @@ vocab_size = len(tk.word_index) + 1
 # load embedding from file
 raw_embedding = load_embedding('embedding_word2vec.txt')
 # get vectors in the right order
-embedding_vectors = get_weight_matrix(raw_embedding, tk.word_index)
+# embedding_vectors = get_weight_matrix(raw_embedding, tk.word_index)
+embedding_vectors = get_weight_matrix(tk.word_index)
 # create the embedding layer
 embedding_layer = Embedding(vocab_size, 100, input_length=max_length, trainable=False, weights=[embedding_vectors])
 
-# define model
+# ------------------------------------------------------
+# Split test/train data
+# ------------------------------------------------------
+X_train, X_test, y_train, y_test = train_test_split(X_pad, df['polarity'].values, test_size=test_size, random_state=1, shuffle=True)
+
+X_train1 = X_train[batch_size:]
+y_train1 = y_train[batch_size:]
+X_valid = X_train[:batch_size]
+y_valid = y_train[:batch_size]
+
+# ------------------------------------------------------
+# Model description
+# ------------------------------------------------------
 model = Sequential()
+
 model.add(embedding_layer)
-# model.add(LSTM(256, return_sequences=True))
-model.add(LSTM(128))
+model.add(LSTM(lstm_size, dropout=lstm_dropout, recurrent_dropout=lstm_recurrent_dropout, return_sequences=True))
+model.add(LSTM(lstm_size, dropout=lstm_dropout, recurrent_dropout=lstm_recurrent_dropout))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=20)
+history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=100)
 
 # ------------------------------------------------------
 # Evaluate the model performance

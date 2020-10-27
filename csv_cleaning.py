@@ -37,24 +37,24 @@ def clean_text(text):
     return text.join(new_text)
 
 
-# Import CSV
-data = pd.read_csv(
-    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/training.1600000.processed.noemoticon.csv",
-    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/training.1600000.processed.noemoticon.csv",
-    header=None,
-    encoding='latin-1',
-    usecols=[0, 5])
-
-# available columns are [0,1,2,4,5]=['polarity', 'id', 'date', 'user', 'text']
-data.columns = ['polarity', 'text']
-data['polarity'] = pd.to_numeric(data['polarity'], downcast='integer')
-# 0 ->[1,0] negative ou 0, 4 ->[0,1] positive ou 1
-data.polarity = data.polarity.replace({0: 0, 4: 1})
-
-# Cleaning all the data
-data['clean_text'] = data['text'].apply(lambda x: clean_text(x))
-data.to_csv(r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv', index = False)
-# data.to_csv(r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv', index = False)
+# # Import CSV
+# data = pd.read_csv(
+#     "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/training.1600000.processed.noemoticon.csv",
+#     # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/training.1600000.processed.noemoticon.csv",
+#     header=None,
+#     encoding='latin-1',
+#     usecols=[0, 5])
+#
+# # available columns are [0,1,2,4,5]=['polarity', 'id', 'date', 'user', 'text']
+# data.columns = ['polarity', 'text']
+# data['polarity'] = pd.to_numeric(data['polarity'], downcast='integer')
+# # 0 ->[1,0] negative ou 0, 4 ->[0,1] positive ou 1
+# data.polarity = data.polarity.replace({0: 0, 4: 1})
+#
+# # Cleaning all the data
+# data['clean_text'] = data['text'].apply(lambda x: clean_text(x))
+# data.to_csv(r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv', index = False)
+# # data.to_csv(r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv', index = False)
 
 
 # The goal is to have a smaller dataset for training
@@ -63,18 +63,18 @@ def create_small_dataset(n, dataset):
 
 
 data2 = pd.read_csv(
-    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
-    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv",
+    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
+    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/cleaned_data.csv",
     encoding='latin-1')
 data2['clean_text'] = data2.clean_text.astype(str)
 
 print("start creating a small dataset")
-small_df = create_small_dataset(10000, data2)
+small_df = create_small_dataset(100000, data2)
 print(small_df['polarity'].value_counts())
 print("finishing creating a small dataset")
 small_df.to_csv(
-    r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/mid_cleaned_data.csv',
-    # r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/small_cleaned_data.csv',
+    # r'C:/Users/Théo/Documents/twitter_sentiment_analysis/data/mid_cleaned_data.csv',
+    r'C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv',
     index=False)
 print("finishing saving it")
 

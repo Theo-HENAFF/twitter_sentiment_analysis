@@ -48,4 +48,32 @@ score test : 0.7488024830818176
 BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512
 score test : 0.7529925107955933
 
+BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.2
+score test : 0.7556024789810181
 
+BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.5
+score test : 0.7660350203514099
+
+2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.6
+score test : 0.7709599733352661
+
+2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.6 recurrent_dropout=0.2
+score test :  0.7734349966049194
+
+2*BiDi-LSTM(256) epoch=100 maxlen=30 batch_size=512 dropout=0.6 recurrent_dropout=0.4
+score test : 0.7677724957466125
+
+2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.2
+score test : 0.777797520160675
+
+2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.0
+score test : 0.7777050137519836
+
+2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.4
+score test : 0.7780424952507019
+
+2*BiDi-LSTM(512) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.4
+score test : 0.7781574726104736
+
+2*BiDi-LSTM(512) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.0
+score test : 

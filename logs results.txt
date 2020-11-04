@@ -1,79 +1,62 @@
 10k tweets
 
-3*LSTM(200) epoch=20 maxlen=30 batch_size=100
-score test : 0.6808000206947327
-
-3*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=100
-score test : 0.6675999760627747
-
-1*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=100
-score test : 0.6732000112533569
-
 3*LSTM(200) epoch=20 maxlen=30 batch_size=50
 score test : 0.6916000247001648
 
-3*LSTM(200) epoch=20 maxlen=30 batch_size=32
-score test : 0.6868000030517578
-
-3*LSTM(200) epoch=20 maxlen=30 batch_size=70
-score test : 0.6836000084877014
-
 --------------------------------------
 100k tweets
-
-3*LSTM(200) epoch=20 maxlen=30 batch_size=50
-score test : 0.7152000069618225
 
 3*LSTM(200) epoch=20 maxlen=30 batch_size=500
 score test :  0.727400004863739
 
 3*BiDi-LSTM(200) epoch=20 maxlen=30 batch_size=500
 score test : 0.7239999771118164
-
-3*BiDi-LSTM(500) epoch=20 maxlen=30 batch_size=500
-score test : 0.719760000705719
-
 --------------------------------------
 1600k tweets
+
+-------------
+Sans Word2Vec
+-------------
 
 3*BiDi-LSTM(500) epoch=20 maxlen=30 batch_size=500
 score test : 0.7556174993515015
 
-3*BiDi-LSTM(512) epoch=40 maxlen=30 batch_size=512
-score test : 0.7486050128936768
-
-BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512
-score test : 0.7488024830818176
-
 BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512
 score test : 0.7529925107955933
-
-BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.2
-score test : 0.7556024789810181
-
-BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.5
-score test : 0.7660350203514099
-
-2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.6
-score test : 0.7709599733352661
-
-2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.6 recurrent_dropout=0.2
-score test :  0.7734349966049194
-
-2*BiDi-LSTM(256) epoch=100 maxlen=30 batch_size=512 dropout=0.6 recurrent_dropout=0.4
-score test : 0.7677724957466125
-
-2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.2
-score test : 0.777797520160675
-
-2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.0
-score test : 0.7777050137519836
 
 2*BiDi-LSTM(256) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.4
 score test : 0.7780424952507019
 
-2*BiDi-LSTM(512) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.4
+2*BiDi-LSTM(512) epoch=20 maxlen=25 batch_size=512 dropout=0.8 recurrent_dropout=0.4
 score test : 0.7781574726104736
 
-2*BiDi-LSTM(512) epoch=20 maxlen=30 batch_size=512 dropout=0.8 recurrent_dropout=0.0
-score test : 
+2*BiDi-LSTM(512) epoch=20 maxlen=25 batch_size=512 dropout=0.8 recurrent_dropout=0.0
+score test : 0.7701374888420105
+
+2*BiDi-LSTM(512) epoch=50 maxlen=25 batch_size=512 dropout=0.8 recurrent_dropout=0.4
+score test : 0.7679324746131897   15 EPOCHS C'EST LE MIEUX APR7S ON OVERFIT
+
+-------------
+Avec Word2Vec
+-------------
+2*BiDi-LSTM(512) epoch=20 maxlen=25 batch_size=512 dropout=0.4 recurrent_dropout=0.0
+score test : 0.7970824837684631
+
+2*BiDi-LSTM(512) epoch=20 maxlen=25 batch_size=512 dropout=0.4 recurrent_dropout=0.0
+score test : 0.7880474925041199
+
+2*BiDi-LSTM(512) epoch=100 maxlen=25 batch_size=512 dropout=0.6 recurrent_dropout=0.0
+score test : 0.7951850295066833 OVERFITTING APRES 50
+
+2*BiDi-LSTM(512) epoch=50 maxlen=25 batch_size=512 dropout=0.5 recurrent_dropout=0.0
+score test : 0.797029972076416
+
+2*BiDi-LSTM(512) epoch=50 maxlen=25 batch_size=512 dropout=0.4 recurrent_dropout=0.0
+score test : 0.7888175249099731 OVERFITTING APRES 75 ENV
+
+2*BiDi-LSTM(512) epoch=75 maxlen=25 batch_size=512 dropout=0.5 recurrent_dropout=0.0
+score test : 0.7958099842071533
+
+2*BiDi-LSTM(512) epoch=30 maxlen=25 batch_size=512 dropout=0.5 recurrent_dropout=0.0
+score test : 0.7964575290679932
+

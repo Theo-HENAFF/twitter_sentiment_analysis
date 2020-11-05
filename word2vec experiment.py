@@ -29,7 +29,7 @@ if gpus:
         print(e)
 
 tf.keras.callbacks.EarlyStopping(
-    monitor='loss', min_delta=0.001, patience=20, verbose=0, mode='auto',
+    monitor='loss', min_delta=0.001, patience=5, verbose=0, mode='auto',
     baseline=None, restore_best_weights=True
 )
 
@@ -37,24 +37,25 @@ tf.keras.callbacks.EarlyStopping(
 # Parameters
 # ------------------------------------------------------
 # keep tokens with a min occurrence
-min_occurance = 5
+min_occurance = 10
 # Word2Vec parameters
 size_word2vec = 100
-min_count_word2vec = 20
+min_count_word2vec = 10
 # NN s general parameters
-batch_size = 256
+batch_size = 512
+epochs = 50
 test_size=0.25
 # LSTM s parameters
-lstm_size = 128
-lstm_dropout = 0.6
+lstm_size = 512
+lstm_dropout = 0.5
 lstm_recurrent_dropout = 0.0
 
 # ------------------------------------------------------
 # Import cleaned_data CSV
 # ------------------------------------------------------
 df = pd.read_csv(
-    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
-    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
+    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
+    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
     # nrows=20000,
     encoding='latin-1')
 df['clean_text'] = df.clean_text.astype(str)
@@ -145,7 +146,7 @@ raw_embedding = load_embedding('embedding_word2vec.txt')
 # embedding_vectors = get_weight_matrix(raw_embedding, tk.word_index)
 embedding_vectors = get_weight_matrix(tk.word_index)
 # create the embedding layer
-embedding_layer = Embedding(vocab_size, 100, input_length=max_length, trainable=False, weights=[embedding_vectors])
+embedding_layer = Embedding(vocab_size, size_word2vec, input_length=max_length, trainable=False, weights=[embedding_vectors])
 
 # ------------------------------------------------------
 # Split test/train data
@@ -169,7 +170,7 @@ model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=100)
+history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=epochs)
 
 # ------------------------------------------------------
 # Evaluate the model performance

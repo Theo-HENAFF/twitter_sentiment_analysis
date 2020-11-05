@@ -29,15 +29,20 @@ tf.keras.callbacks.EarlyStopping(
 # Parameters
 # ------------------------------------------------------
 # NN s general parameters
-batch_size = 16
+batch_size = 6
 epochs = 3
 # ------------------------------------------------------
 # Load the data
 # ------------------------------------------------------
-(x_train, y_train), (x_test, y_test), preproc = txt.texts_from_folder('data', maxlen=500,
-                                                                      preprocess_mode='bert',
-                                                                      train_test_names=['train', 'test'],
-                                                                      classes=['1', '0'])
+# (x_train, y_train), (x_test, y_test), preproc = txt.texts_from_folder('data', maxlen=500,
+#                                                                       preprocess_mode='bert',
+#                                                                       train_test_names=['train', 'test'],
+#                                                                       classes=['1', '0'])
+
+(x_train, y_train), (x_test, y_test), preproc = txt.texts_from_csv('data/mid_cleaned_data.csv', maxlen=30,
+                                                                   preprocess_mode='bert',
+                                                                   text_column='clean_text',
+                                                                   label_columns='polarity')
 # ------------------------------------------------------
 # Load BERT model
 # ------------------------------------------------------
@@ -51,7 +56,7 @@ learner = ktrain.get_learner(model,
                              batch_size=batch_size)
 
 # find good learning rate
-learner.lr_find()             # briefly simulate training to find good learning rate
+learner.lr_find(max_epochs=3)             # briefly simulate training to find good learning rate
 learner.lr_plot()             # visually identify best learning rate
 
 # ------------------------------------------------------

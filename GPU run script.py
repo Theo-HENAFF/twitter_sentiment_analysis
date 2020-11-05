@@ -65,7 +65,7 @@ y_valid = y_train[:batch_size]
 # ------------------------------------------------------
 vocabulary_size = len(tk.word_counts.keys()) + 1
 max_words = 25 #100 #maxlen must be equal to maxword
-embedding_size = 128
+embedding_size = 512
 
 # ------------------------------------------------------
 # Model description
@@ -73,8 +73,8 @@ embedding_size = 128
 model = Sequential()
 model.add(Embedding(vocabulary_size, embedding_size, input_length=max_words))
 
-# model.add(Bidirectional(LSTM(256, return_sequences=True)))
-model.add(Bidirectional(LSTM(256, dropout=0.2)))
+model.add(Bidirectional(LSTM(512, return_sequences=True, dropout=0.8,recurrent_dropout=0.4)))
+model.add(Bidirectional(LSTM(512, dropout=0.8,recurrent_dropout=0.4)))
 
 # model.add(LSTM(200, return_sequences=True))
 # model.add(LSTM(200, return_sequences=True))
@@ -83,7 +83,7 @@ model.add(Bidirectional(LSTM(256, dropout=0.2)))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=20)
+history = model.fit(X_train1, y_train1, shuffle=True, validation_data=(X_valid, y_valid), batch_size=batch_size, epochs=15)
 
 # ------------------------------------------------------
 # Evaluate the model performance

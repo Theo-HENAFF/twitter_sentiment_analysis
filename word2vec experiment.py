@@ -39,7 +39,7 @@ tf.keras.callbacks.EarlyStopping(
 # keep tokens with a min occurrence
 min_occurance = 10
 # Word2Vec parameters
-size_word2vec = 100
+size_word2vec = 200
 min_count_word2vec = 10
 # NN s general parameters
 batch_size = 512
@@ -54,8 +54,8 @@ lstm_recurrent_dropout = 0.0
 # Import cleaned_data CSV
 # ------------------------------------------------------
 df = pd.read_csv(
-    "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
-    # "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
+    # "C:/Users/Théo/Documents/twitter_sentiment_analysis/data/cleaned_data.csv",
+    "C:/Users/HENAFF/Documents/Cours Polytech/S9 en Roumanie/Machine Learning - ML/data/mid_cleaned_data.csv",
     # nrows=20000,
     encoding='latin-1')
 df['clean_text'] = df.clean_text.astype(str)
@@ -109,7 +109,7 @@ def load_embedding(filename):
 def get_weight_matrix(vocab):
     vocab_size = len(vocab) + 1
     # define weight matrix dimensions with all 0
-    weight_matrix = np.zeros((vocab_size, 100))
+    weight_matrix = np.zeros((vocab_size, size_word2vec))
 
     for w, i in vocab.items():
         # The word_index contains a token for all words of the training data so we need to limit that

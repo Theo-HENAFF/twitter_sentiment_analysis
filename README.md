@@ -19,15 +19,15 @@ A command is provided to download them automatically
 
 # How to get the project work
 ## Setup a conda environment with python 3.7 and ML libraries
-### Create the virtual env
+##### Create the virtual env
 `conda create -n yourenvname python=3.7`
 
-### Navigate to the env
+##### Navigate to the env
 `conda activate yourenvname`
 
-### Install libraries using Pypi (pip)
+##### Install libraries using Pypi (pip)  
 For Scripts 1 to 7  
-`pip install scikit-learn pandas numpy scipy tensorflow keras gensim matplotlib`
+`pip install scikit-learn pandas numpy scipy tensorflow keras gensim matplotlib nltk re string`
 
 For bonus script it is recommended to setup an environment for itself because it use ktrain which have compatibility issue with keras.  
 
@@ -39,13 +39,14 @@ Links : [Sentiment 140](https://www.kaggle.com/kazanova/sentiment140), [Hate Spe
 ### Word2Vec and Gensim models
 As I said previously in the disclaimer part they are respectively 5GB and 15GB.  
 They are stored in a Google Drive. Because they are heavy files they need a confirmation to be downloaded.
-Thanks to beliys comment into this [GitHub](https://gist.github.com/iamtekeste/3cdfd0366ebfd2c0d805#gistcomment-2316906) we can bypass the confirmation.
+Thanks to [beliys](https://github.com/beliys) comment into this [GitHub discussion](https://gist.github.com/iamtekeste/3cdfd0366ebfd2c0d805#gistcomment-2316906) we can bypass the confirmation.
 
 Using jupyter terminal or any linux-based terminal we are now able to download each file from a single command-line using `wget`.  
+
 For the Word2Vec model :  
 `wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1lw5Hr6Xw0G0bMT1ZllrtMqEgCTrM7dzc' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1lw5Hr6Xw0G0bMT1ZllrtMqEgCTrM7dzc" -O word2vec_twitter_tokens.bin && rm -rf /tmp/cookies.txt`
 
-For the FastText model :
+For the FastText model :  
 `wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=15zXlbO3bxSYTPt71Fon5-0-oCB8iMSno' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=15zXlbO3bxSYTPt71Fon5-0-oCB8iMSno" -O fasttext.bin && rm -rf /tmp/cookies.txt`
 
 ## Clean the data

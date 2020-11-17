@@ -130,8 +130,11 @@ dmypy.json
 
 # file to ignore because of different anaconda env
 /Machine Learning - ML.iml
+Machine Learning - ML.iml
+
 /.idea/misc.xml
 .idea/
 .idea
 idea
 /.idea/misc.xml
+

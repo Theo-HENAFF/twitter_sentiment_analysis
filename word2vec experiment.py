@@ -77,35 +77,19 @@ cleaned_dict_word = [k for k,c in dict_word.items() if c >= min_occurance]
 # ------------------------------------------------------
 # Train Word2Vec model
 # ------------------------------------------------------
-model = Word2Vec(sentences, size=size_word2vec, min_count=min_count_word2vec, workers=10)
+model_Word2Vec = Word2Vec(sentences, size=size_word2vec, min_count=min_count_word2vec, workers=10)
 # summarize vocabulary size in model
-words = list(model.wv.vocab)
+words = list(model_Word2Vec.wv.vocab)
 print('Vocabulary size: %d' % len(words))
 
-# save model in ASCII (word2vec) format
-filename = 'embedding_word2vec.txt'
-model.wv.save_word2vec_format(filename, binary=False)
+print(model_Word2Vec.wv.most_similar('good'))
 
-print(model.wv.most_similar('good'))
+size_word2vec = model_Word2Vec.vector_size
 
 
 # ------------------------------------------------------
 # Define functions to create the word2vec weight matrix
 # ------------------------------------------------------
-def load_embedding(filename):
-    # load embedding into memory, skip first line
-    file = open(filename,'r')
-    lines = file.readlines()[1:]
-    file.close()
-    # create a map of words to vectors
-    embedding = dict()
-    for line in lines:
-        parts = line.split()
-        # key is string word, value is numpy array for vector
-        embedding[parts[0]] = np.asarray(parts[1:], dtype='float32')
-    return embedding
-
-
 def get_weight_matrix(vocab):
     vocab_size = len(vocab) + 1
     # define weight matrix dimensions with all 0
@@ -115,7 +99,7 @@ def get_weight_matrix(vocab):
         # The word_index contains a token for all words of the training data so we need to limit that
         if i < vocab_size:
             try:
-                vect = model.wv.get_vector(w)
+                vect = model_Word2Vec.wv.get_vector(w)
                 weight_matrix[i] = vect
             # Check if the word from the training data occurs in the GloVe word embeddings
             # Otherwise the vector is kept with only zeros
@@ -140,9 +124,6 @@ X_pad = pad_sequences(X_seq, maxlen=max_length, padding='post')  # maxlen must b
 # define vocabulary size (largest integer value)
 vocab_size = len(tk.word_index) + 1
 
-# load embedding from file
-raw_embedding = load_embedding('embedding_word2vec.txt')
-# get vectors in the right order
 # embedding_vectors = get_weight_matrix(raw_embedding, tk.word_index)
 embedding_vectors = get_weight_matrix(tk.word_index)
 # create the embedding layer

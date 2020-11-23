@@ -14,8 +14,8 @@ Most of the project is running with **Keras** and **Tensorflow 2.3** background.
 Most of the proposed scripts need high configurations with decent GPU.  
 Scripts 3, 4, 5 and bonus need also at least 32GB of RAM. More is recommended (was running fine with 52GB). For the other scripts 16GB of RAM was fine with an Nvidia GTX1070 GPU.  
 
-The Word2Vec model used is nearly 5GB and the FastText one is 15GB. They may be manually from [Frederic Godin GitHub's](https://github.com/FredericGodin/TwitterEmbeddings)
-A command is provided to download them automatically
+The Word2Vec model used is nearly 5GB and the FastText one is 15GB. They may be manually from [Frederic Godin GitHub's](https://github.com/FredericGodin/TwitterEmbeddings)  
+A command is provided to download them automatically in the download section.
 
 # How to get the project work
 ## Setup a conda environment with python 3.7 and ML libraries

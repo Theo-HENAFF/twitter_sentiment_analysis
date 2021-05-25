@@ -27,7 +27,7 @@ A command is provided to download them automatically in the download section.
 
 ##### Install libraries using Pypi (pip)  
 For Scripts 1 to 7  
-`pip install scikit-learn pandas numpy scipy tensorflow keras gensim matplotlib nltk re string modin[ray]`
+`pip install scikit-learn pandas numpy scipy tensorflow keras gensim matplotlib nltk modin[ray]`
 
 For bonus script it is recommended to setup an environment for itself because it use ktrain which have compatibility issue with keras.  
 
